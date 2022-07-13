@@ -1,0 +1,116 @@
+
+========================================================================
+                          Complexity Analysis
+========================================================================
+
+NOTE:
+- Your time complexities should be in big-O notation.
+- For operations that involve only one set, your time complexities should
+  be in terms of n, where n is the number of elements in the set.
+- For operations that involve two sets, your time complexities should be in
+  terms of n and m, where n and m are the number of elements in each of the
+  sets respectively.
+
+
+--------
+SetUnion
+--------
+
+Worst case complexity: O( mlog(m) + nlog(n) )
+
+Explanation:  The union function creates an empty new set and then iterates and inserts each element
+              from the first set and then the second set. This means it calls the log(n) insert function n times
+              then again for the second set. 
+
+---------------
+SetIntersection
+---------------
+
+Worst case complexity: nlog(m) + nlog(n) = O(nlog(n))
+
+Explanation:  
+              I believe the worst case situation is when both sets are equal. This is because during the 
+              O(n) traversal there will be a Olog(m) search + a guaranteed Olog(n) insert. Othercases will not 
+              always incur the log(n) insert. Thus n(log(m) + log(n)) = nlog(m) + nlog(n). speifically the worst case 
+              is for max(m,n).
+
+
+-------------
+SetDifference
+-------------
+
+Worst case complexity: nlog(m) + nlog(n) = O(nlogn)
+
+Explanation: 
+          Similar but inverted to intersect, difference has the worst complexity when the sets are completely different. 
+          Again during the O(n) traversal there will be a Olog(m) search + a guaranteed Olog(n) insert. Othercases will not 
+          always incur the log(n) insert. Thus n(log(m) + log(n)) = nlog(m) + nlog(n) which is just O(nlog(n)) in time complexity
+          This a product of the balanced avl tree guaranteeing log(n) search and insert.
+
+---------
+SetEquals
+---------
+
+Worst case complexity: 2*nlog(m) + 2*nlog(n) +2*n = O(nlogn)
+          
+Explanation:  Set equals uses the set difference function twice and check if result is an empty set. Thus
+              it should have  twice the timecomplexity of set difference i.e 2*nlog(m) + 2*nlog(n) there will
+              also be a 2*O(n) overhead from the Setfree function. nlog(n) overpowers n so the n can be dropped
+
+
+---------
+SetSubset
+---------
+
+Worst case complexity: nlog(m) + nlog(n) + n = O(nlogn)
+
+Explanation:  This function also uses set difference but in this case only once. It therefore has the same complexity 
+              as set differnce but with a O(n) setfree overhead. nlog(n) overpowers n so the n can be dropped.
+
+
+--------
+SetFloor
+--------
+
+Worst case complexity: log(n)
+
+Explanation:  if given an undefined value the set floor will have to recursively binary searches through tree 
+              until it exhausts all the subtrees. The funciton uses if else statements to direct the search which guarantees
+              a O(log(n)) traversal and not a O(n) traversal.
+
+
+----------
+SetCeiling
+----------
+
+Worst case complexity: log(n)
+
+Explanation:  Similar to floor, if given an undefined value the set ceiling will have to recursively binary searches through tree 
+              until it exhausts all the subtrees. The funciton uses if else statements to direct the search which guarantees
+              a O(log(n)) traversal and not a O(n) traversal.
+
+
+========================================================================
+               Design Documentation for Cursor Operations
+========================================================================
+
+If you completed the cursor operations, you must explain the design and
+implementation of your solution here.
+
+The design aims to impelment 'next' pointers as the nodes are inserted using only log(n) function calls.
+The critical components are storing min and max nodes as pointers in the set's memory and
+storing a next pointer for each new node. The next pointer is calculated using the floor and ceiling
+of a given value, where the floor's next is the new node and the new nodes next is the ceiling. because
+this is done with log(n) functions it doesn't add signficant time complexity to the node insertion. The
+requirement said insertion can be at max log(n). 
+
+When the cursor is called it can return the stored minimum node in constant time, and any SetCursorNext calls just require accessing
+to the minimum's stored next and so on. The tradeoff is more memory complexity for improved time complexity. 
+
+
+
+
+
+
+
+
